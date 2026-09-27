@@ -1,0 +1,24 @@
+# Data Pack config fragment (Phase 6 / Pack 3)
+# Merge these keys under your existing tools_config.yaml "tools:" section.
+# Everything here is optional: missing or broken file -> sane defaults
+# (all data tools enabled, paths jailing as coded in data_pack.py).
+
+tools:
+  csv.read:        {enabled: true}   # low
+  csv.filter:      {enabled: true}   # low
+  csv.stats:       {enabled: true}   # low
+  json.query:      {enabled: true}   # low
+  db.query:        {enabled: true}   # medium — read-only SQL, jailed to DATA_DIR
+  expenses.add:    {enabled: true}   # low — integer paise only
+  expenses.report: {enabled: true}   # low
+  habits.checkin:  {enabled: true}   # low
+  habits.report:   {enabled: true}   # low
+  units.convert:   {enabled: true}   # low — offline, no network
+
+# Hints only (informational, not enforced by code):
+data:
+  dirs:             # allowed roots for csv.read / csv.filter / csv.stats / json.query
+    - "~"          # currently: home-rooted via fs_tools._resolve (same as fs.read)
+  db_dir: "~/.jarvis"  # db.query sqlite files are jailed here (DATA_DIR)
+  # finance/habit stores: $DATA_DIR/finance.db and $DATA_DIR/habits.db
+  # created automatically on first use

@@ -1,0 +1,51 @@
+{
+  "identifier": "ai.jarvis.shell",
+  "$schema": "https://schema.tauri.app/config/2",
+  "app": {
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http://127.0.0.1:8765 ws://127.0.0.1:8765; media-src 'self' blob:; img-src 'self' data: blob:"
+    },
+    "windows": [
+      {
+        "label": "chat",
+        "title": "J.A.R.V.I.S.",
+        "width": 1000,
+        "height": 680,
+        "resizable": true
+      }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "category": "Utility",
+    "targets": "all",
+    "externalBin": [
+      "binaries/jarvis-sidecar"
+    ],
+    "resources": {
+      "../models/manifest.json": "models/manifest.json"
+    },
+    "windows": {
+      "wix": {
+        "language": "en-US",
+        "upgradeCode": "2748cc13-d19a-4ddb-94a8-3fe1e6c3ec4d"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "displayLanguageSelector": false
+      }
+    }
+  },
+  "productName": "JARVIS",
+  "version": "0.2.0",
+  "build": {
+    "frontendDist": "ui"
+  }
+}

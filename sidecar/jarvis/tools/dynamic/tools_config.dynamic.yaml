@@ -1,0 +1,67 @@
+# Dynamic tool providers config (Phase 7).
+# Loaded by jarvis.tools.dynamic.config: load_dynamic_config() / section().
+# Read on demand (mtime-cached); a missing or broken file degrades to defaults.
+# All secrets are EMPTY / DISABLED by default -- fill in only what you use.
+
+# ---- automation: named multi-step routines stored in SQLite ----------------
+automation:
+  # Path to the routines DB. Empty -> <data_dir>/automation.db (or DATA_DIR).
+  db_path: ""
+
+# ---- twilio: SMS / WhatsApp sends (messaging provider, high-risk tools) -----
+twilio:
+  enabled: false            # master switch; keep false until credentials set
+  account_sid: ""           # Twilio Account SID
+  auth_token: ""            # Twilio Auth Token (secret -- keep this file private)
+  from_number: ""           # e.g. "+15551234567" for SMS
+  whatsapp_from: ""         # e.g. "whatsapp:+15551234567" for WhatsApp
+
+# ---- telegram: bot sends ---------------------------------------------------
+telegram:
+  enabled: false            # master switch; keep false until the bot token set
+  bot_token: ""             # BotFather token (secret -- keep this file private)
+  default_chat_id: ""       # chat id used when a tool call omits one
+
+# ---- voices: per-language Piper TTS model paths (languages provider) -------
+# Empty model_path = voice not installed -> say.<lang> returns a clear error
+# instead of failing. Languages: en hi hinglish ta te bn mr es fr de pt ar.
+voices:
+  en:       {model_path: ""}
+  hi:       {model_path: ""}
+  hinglish: {model_path: ""}
+  ta:       {model_path: ""}
+  te:       {model_path: ""}
+  bn:       {model_path: ""}
+  mr:       {model_path: ""}
+  es:       {model_path: ""}
+  fr:       {model_path: ""}
+  de:       {model_path: ""}
+  pt:       {model_path: ""}
+  ar:       {model_path: ""}
+
+# ---- opinions: stance file for the opinion provider ------------------------
+opinions:
+  # YAML/JSON file mapping topics -> stances. Empty -> provider's built-in map.
+  file: ""
+
+# ---- knowledge: sqlite-FTS5 personal recall store -------------------------
+knowledge:
+  # Path to the knowledge DB. Empty -> <data_dir>/knowledge.db (or DATA_DIR).
+  db_path: ""
+
+# ---- apps: installed-application discovery ---------------------------------
+apps:
+  # How often (seconds) the desktop app scan may refresh; floor of 5s.
+  scan_ttl: 60.0
+
+# ---- web: site x action URL-template tools ---------------------------------
+web:
+  # Try to fetch each page's <title> as a snippet alongside the URL.
+  # Turn off for fully offline use (tools then return URL only).
+  fetch_snippets: true
+
+# ---- units: SI/imperial/desi/East-Asian unit conversions -------------------
+# No config needed: the unit table is compiled in. N*(N-1) ordered pairs are
+# addressable as convert.<a>_to_<b>; cross-dimension pairs return a clear
+# dimension-mismatch error. (Currency intentionally excluded -- rates move.)
+units: {}

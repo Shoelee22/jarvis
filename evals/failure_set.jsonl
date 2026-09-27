@@ -1,0 +1,2 @@
+{"desc": "reminder phrasing the agent used to misunderstand", "expected_behavior": "creates a weekday 9am reminder, not a one-off", "id": "FAIL-001", "pattern": "remind me every weekday at 9am → created one-off reminder", "user_correction": "no, I meant every weekday"}
+{"desc": "email confirmation skipped once", "expected_behavior": "reads back draft and waits for explicit yes", "id": "FAIL-002", "pattern": "mail.send executed without confirmation", "user_correction": "you should have asked me first"}

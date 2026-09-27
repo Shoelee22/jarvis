@@ -1,0 +1,11 @@
+name: hello
+version: 1.0.0
+description: A friendly greeter — the smallest possible JARVIS plugin.
+tools:
+  - name: greet
+    description: Greet someone by name.
+    risk: low
+    needs_network: false
+    handler: "hello_plugin:greet"
+    schema:
+      name: "string?"
