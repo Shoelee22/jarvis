@@ -1,0 +1,22 @@
+# Research Pack (Phase 15, workstream A) — tunable settings fragment.
+#
+# Merge this into tools_config.yaml (the sidecar's _load_config() deep-merges
+# whatever is in tools_config.yaml, so these keys are picked up automatically).
+# No secrets here — only bounds that keep investigations cheap.
+#
+# Per-tool on/off switches also live in tools_config.yaml under "tools":
+#   tools:
+#     research.investigate: {enabled: true}  # low risk, network
+#     research.briefing:    {enabled: true}  # low risk, offline
+#     research.compare:     {enabled: true}  # low risk, network
+
+research:
+  # Max sub-questions per investigation (depth 1 uses up to 3, depth 2 all).
+  max_subqueries: 5
+
+  # Hard cap on web.fetch calls per investigation (per-query fetch target is
+  # 1 at depth 1, 2 at depth 2; the cap wins when they disagree).
+  max_fetches: 8
+
+  # Extractive claims kept per fetched page (top keyword-overlap sentences).
+  claims_per_source: 4

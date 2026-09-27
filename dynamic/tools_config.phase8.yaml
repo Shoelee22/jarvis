@@ -1,0 +1,17 @@
+# Phase 8 tool config. Each pack reads its section at call time (missing file
+# or missing section = that pack returns honest setup-step errors, never crashes).
+#
+# Values below are placeholders — fill them in to enable each pack.
+
+gmail:
+  client_id: ""
+  client_secret: ""
+  # Get these from https://console.cloud.google.com/apis/credentials
+  # (OAuth client ID, application type "Desktop app"; enable the Gmail API first).
+
+telegram:
+  bot_token: ""
+  default_chat_id: ""
+  # bot_token: create a bot via @BotFather on Telegram and paste the token here.
+  # default_chat_id: your chat id (use telegram.register_chat to get the exact
+  #   YAML snippet, or message @userinfobot). Leave "" to pass chat_id per call.
