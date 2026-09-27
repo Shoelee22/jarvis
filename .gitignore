@@ -1,0 +1,31 @@
+# Python / PyInstaller
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Rust / Tauri
+shell/target/
+shell/binaries/
+!shell/binaries/README.md
+
+# Local dev
+.venv/
+venv/
+.env
+*.log
+
+# JARVIS runtime data (per-user, never in git)
+.jarvis/
+*.db
+*.db-journal
+*.db-wal
+data/
+jarvis-projects/
+
+# Packaging output
+*.msi
+packaging/output/

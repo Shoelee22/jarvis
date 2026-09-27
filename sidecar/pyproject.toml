@@ -1,0 +1,16 @@
+[package]
+name = "jarvis-sidecar"
+version = "0.1.0"
+description = "JARVIS brain: voice, agent, tools, memory, vision, trainer"
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+ml = ["faster-whisper", "onnxruntime", "piper-tts"]
+llm = ["llama-cpp-python"]
+vector = ["lancedb"]
+crypto = ["sqlcipher3"]
+server = ["fastapi", "uvicorn"]
+train = ["unsloth", "axolotl"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

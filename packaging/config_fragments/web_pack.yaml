@@ -1,0 +1,38 @@
+# Web Pack (Phase 6 / Pack 2) — tunable settings fragment.
+#
+# Merge this into tools_config.yaml (the sidecar's _load_config() deep-merges
+# whatever is in tools_config.yaml, so these keys are picked up automatically).
+# No secrets here — only tunables.
+#
+# Per-tool on/off switches also live in tools_config.yaml under "tools":
+#   tools:
+#     web.search:       {enabled: true}   # medium risk, network — REPLACES the
+#                                          # net_tools.web_search stub
+#     web.fetch:        {enabled: true}   # low risk, network
+#     web.summarize:    {enabled: true}   # low risk, offline
+#     price.check:      {enabled: true}   # medium risk, network
+#     rss.read:         {enabled: true}   # low risk, network
+#     bookmarks.save:   {enabled: true}   # low risk, local sqlite
+#     bookmarks.list:   {enabled: true}   # low risk, local sqlite
+#     link.unshorten:   {enabled: true}   # low risk, network
+#     webshot.capture:  {enabled: true}   # low risk, needs a headless browser
+#
+# Egress: web.search calls egress.check("web.search", "lite.duckduckgo.com").
+# The default egress allowlist for web.search is empty (default-deny) — add
+# "lite.duckduckgo.com" to the allowlist to actually enable search.
+
+web:
+  # HTTP timeout (seconds) for web.search, web.fetch, price.check, rss.read,
+  # link.unshorten.
+  fetch_timeout: 20
+
+  # Max response body bytes kept for fetch/parse work (web.fetch truncates
+  # beyond this and reports truncated: true).
+  max_bytes: 2000000
+
+  # Default number of results returned by web.search when count is omitted.
+  search_count_default: 8
+
+# Output dir for webshot screenshots (defaults to ~/workspace/jarvis/output
+# when omitted). Screenshots land in <output_dir>/webshots/.
+# output_dir: ~/workspace/jarvis/output

@@ -1,0 +1,34 @@
+# JARVIS Phase 9 configuration — the self-extending frontier.
+# Copy values in as you connect services. Everything defaults to SAFE:
+# unconfigured integrations return honest errors, never fake success.
+
+# API mode: use Jarvis from your phone / other apps over HTTP.
+api:
+  lan_enabled: false        # false = localhost only. true = bind 0.0.0.0 (trusted networks ONLY)
+
+# Background workers: persistent goal-pursuing agents on a schedule.
+workers:
+  autonomy_opt_in: false   # MUST be true before workers.spawn is allowed. Your explicit yes.
+
+# Phone conversations: real voice calls that hold a conversation (Twilio).
+phone:
+  twilio_sid: ""           # Twilio Account SID (AC...)
+  twilio_token: ""         # Twilio Auth Token
+  from_number: ""          # Your Twilio caller ID, E.164 e.g. +15551234567
+  public_ws_url: ""        # Public wss:// URL Twilio streams audio to, e.g. wss://your-host/twilio-stream
+  stt_enabled: false       # true once faster-whisper is installed
+  tts_enabled: false       # true once piper-tts + a voice model are installed
+
+# Tool forging: no keys needed. Forged tools live in sidecar/jarvis/tools/forged/
+# and stay INACTIVE until tools.test_forged passes with activate=true.
+forge:
+  enabled: true
+
+# Swarm: no keys needed. Bounded at 4 specialists x 8 steps, 120s timeout each.
+swarm:
+  enabled: true
+  max_specialists: 4
+
+# Universal inbox: no keys of its own — it reuses gmail / telegram / comms config.
+inbox:
+  enabled: true

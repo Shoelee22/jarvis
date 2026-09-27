@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.A.R.V.I.S.</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Boot sequence -->
+<div id="boot">
+  <div class="boot-inner">
+    <div class="boot-logo">J.A.R.V.I.S.</div>
+    <div class="boot-sub">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
+    <div id="boot-lines"></div>
+    <div class="boot-bar"><div id="boot-fill"></div></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <div>
+        <div class="brand-name">J.A.R.V.I.S.</div>
+        <div class="brand-sub">MARK IV INTERFACE</div>
+      </div>
+    </div>
+    <div class="header-center">
+      <span id="clock">--:--:--</span>
+    </div>
+    <div class="header-actions">
+      <span id="sidecar-status" class="status-dot offline" title="Sidecar status"></span>
+      <button id="btn-camkill" class="icon-btn" title="Camera kill-switch">◉</button>
+      <button id="btn-settings" class="icon-btn" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <div id="settings" class="drawer hidden">
+    <div class="drawer-title">SETTINGS</div>
+    <label class="setting-row">
+      <span>Autonomy</span>
+      <div class="segmented" id="autonomy-seg">
+        <button data-level="manual">Manual</button>
+        <button data-level="assisted" class="active">Assisted</button>
+        <button data-level="autonomous">Autonomous</button>
+      </div>
+    </label>
+    <div class="setting-note">Assisted: I shall ask before anything irreversible, sir.</div>
+  </div>
+
+  <main>
+    <!-- Left: vitals -->
+    <aside class="panel" id="vitals">
+      <div class="panel-title">System Vitals</div>
+      <div class="vital"><span>Core power</span><b id="v-power">98%</b></div>
+      <div class="meter"><div id="v-power-bar"></div></div>
+      <div class="vital"><span>Neural load</span><b id="v-load">12%</b></div>
+      <div class="meter"><div id="v-load-bar"></div></div>
+      <div class="vital"><span>Uplink</span><b class="good">SECURE</b></div>
+      <div class="vital"><span>Voice synth</span><b>en_GB · Alan</b></div>
+      <div class="vital"><span>Protocols</span><b class="good">ARMED</b></div>
+      <div class="panel-title" style="margin-top:14px">Routines</div>
+      <button class="chip" data-routine="briefing">Morning briefing</button>
+      <button class="chip" data-routine="diagnostic">Full diagnostic</button>
+      <button class="chip" data-routine="lockdown">House party protocol</button>
+    </aside>
+
+    <!-- Center: reactor stage -->
+    <section id="stage">
+      <div id="stage-wrap">
+        <canvas id="wave" width="360" height="360"></canvas>
+        <button id="core" class="idle" aria-label="Push to talk">
+          <span class="core-ring r1"></span>
+          <span class="core-ring r2"></span>
+          <span class="core-ring r3"></span>
+          <span class="core-triangle"></span>
+        </button>
+      </div>
+      <div id="core-state-label">idle</div>
+      <div class="core-hint">TAP TO SPEAK · CTRL+SHIFT+J</div>
+    </section>
+
+    <!-- Right: dialogue log -->
+    <aside class="panel" id="comms">
+      <div class="panel-title">Dialogue Log</div>
+      <div id="messages"></div>
+      <footer>
+        <span class="prompt">SIR&nbsp;›</span>
+        <input id="input" type="text" placeholder="Give me an instruction..." autocomplete="off">
+        <button id="btn-send" class="send-btn" title="Send">➤</button>
+      </footer>
+    </aside>
+  </main>
+
+  <div id="scanlines"></div>
+  <div id="vignette"></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

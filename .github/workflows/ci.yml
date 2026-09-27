@@ -1,0 +1,27 @@
+name: jarvis-ci
+on: [push, pull_request]
+jobs:
+  sidecar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install pytest
+      - run: make sidecar-test
+        working-directory: jarvis
+      - run: python3 evals/harness.py --suite regression
+        working-directory: jarvis
+  shell:
+    strategy:
+      matrix: { os: [ubuntu-latest, windows-latest, macos-latest] }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: clippy }
+      - run: cargo clippy -- -D warnings
+        working-directory: jarvis/shell
+
+  # Installer builds live in .github/workflows/build-installers.yml
+  # (runs on tags v* — PyInstaller sidecar + tauri-action NSIS/MSI + Release).
