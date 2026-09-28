@@ -349,9 +349,13 @@ def ask_handler(args: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 def _matplotlib_available() -> bool:
+    # NOTE: uses importlib with a non-literal name so PyInstaller's static
+    # analysis does not detect the matplotlib dependency and drop this
+    # entire module from the frozen bundle (matplotlib/numpy are excluded
+    # from the installer; the tool falls back to ASCII charts).
     try:
-        import matplotlib  # noqa: F401
-        return True
+        import importlib.util
+        return importlib.util.find_spec("mat" + "plotlib") is not None
     except Exception:
         return False
 
@@ -417,9 +421,12 @@ def chart_handler(args: dict) -> dict:
                               if kind == 'bar' else y + ' vs row order'}")
 
         if _matplotlib_available():
-            import matplotlib
+            import importlib
+            # Non-literal module name: keeps PyInstaller's static analysis
+            # from treating matplotlib as a hard dependency of this module.
+            matplotlib = importlib.import_module("mat" + "plotlib")
             matplotlib.use("Agg")
-            import matplotlib.pyplot as plt
+            plt = importlib.import_module("mat" + "plotlib.py" + "plot")
             fig, ax = plt.subplots(figsize=(8, 4.5))
             if kind == "bar":
                 ax.bar(labels, values)
