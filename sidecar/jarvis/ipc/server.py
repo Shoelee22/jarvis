@@ -258,8 +258,16 @@ def main():
         print("Core logic is still fully testable: make sidecar-test")
         raise SystemExit(1)
     from .api_mode import bind_host
+    # log_config=None: the installed app runs windowed (console=False), so
+    # sys.stderr is None. uvicorn's default LOGGING_CONFIG instantiates
+    # uvicorn.logging.DefaultFormatter, whose __init__ calls
+    # sys.stderr.isatty() -> AttributeError -> the sidecar dies on launch
+    # ("Unable to configure formatter 'default'"). Skipping uvicorn's
+    # dictConfig avoids the crash entirely; the shell supervises the
+    # sidecar and reads the token file, so uvicorn's own logs are not
+    # needed in the bundle.
     uvicorn.run("jarvis.ipc.server:build_app", factory=True, host=bind_host(),
-                port=args.port, reload=args.reload)
+                port=args.port, reload=args.reload, log_config=None)
 
 
 if __name__ == "__main__":

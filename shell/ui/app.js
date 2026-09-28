@@ -159,7 +159,7 @@
       } else setState("idle");
     } catch (e) {
       setState("idle");
-      saySys("sidecar unreachable — start it with `make dev`", "warn");
+      saySys("sidecar unreachable — restart the app", "warn");
     }
   }
 
@@ -380,7 +380,7 @@
       initToken().then(async () => {
         const ok = await checkHealth();
         if (ok) { setState("speaking"); sayJarvis("Sidecar link established, sir. All systems nominal. How may I assist you?"); setTimeout(() => setState("idle"), 1800); }
-        else saySys("sidecar unreachable — start it with `make dev`, or add ?demo=1 to preview", "warn");
+        else saySys("sidecar unreachable — restart the app, or add ?demo=1 to preview", "warn");
         setInterval(checkHealth, 15000);
       });
     });
