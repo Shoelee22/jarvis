@@ -1,0 +1,36 @@
+# DEV PACK (Phase 6 / Pack 4) config fragment for ~/workspace/jarvis/tools_config.yaml.
+#
+# Merge into tools_config.yaml (handlers re-read it at call time; edits take
+# effect immediately). Per-tool toggles follow the same convention as the
+# Phase 4 creator pack: set a tool's `enabled: false` to block it with a clean
+# error. Missing keys fall back to sane defaults (all enabled).
+#
+# The dev pack jails every {path}/{repo} argument: after realpath resolution it
+# must sit inside dev.repos_dir, otherwise the call is rejected with {"error"}.
+# Point repos_dir at the directory tree the agent is allowed to touch — e.g.
+# per-project roots. Default is ~/workspace.
+
+dev:
+  # Jail root for git.*, project.scaffold, code.lint, deps.list, log.tail.
+  repos_dir: "~/workspace"
+
+# Per-tool on/off switches (merge under the top-level `tools:` key).
+tools:
+  git.status:
+    enabled: true
+  git.log:
+    enabled: true
+  git.diff:
+    enabled: true
+  project.scaffold:
+    enabled: true
+  code.lint:
+    enabled: true
+  deps.list:
+    enabled: true
+  log.tail:
+    enabled: true
+  port.check:
+    enabled: true
+  env.doctor:
+    enabled: true

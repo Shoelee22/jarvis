@@ -1,0 +1,48 @@
+# ============================================================================
+# Phase 6 / Pack 7 — SMART HOME PACK fragment
+#
+# Merge these sections into ~/workspace/jarvis/tools_config.yaml
+# (or into the installer-bundled config). The installer merges each
+# pack fragment with the user's existing file — deep-merge, so existing
+# sections you already customized are preserved.
+#
+# Everything is DISABLED / EMPTY by default: the pack is fully offline
+# until you configure a backend below. Unconfigured backends return
+# honest per-step errors — never fake success.
+# ============================================================================
+
+# --- home.call: Home Assistant service calls (HIGH risk, needs_network) ---
+# Fill in a long-lived access token: HA → your profile → Security → Create token.
+homeassistant:
+  enabled: false
+  base_url: "http://homeassistant.local:8123"
+  token: ""
+
+# --- mqtt.publish: raw MQTT publishing (HIGH risk, needs_network) ---
+# Needs paho-mqtt in the sidecar env:  pip install paho-mqtt
+mqtt:
+  enabled: false
+  host: ""          # e.g. "192.168.1.50" or "mqtt.local"
+  port: 1883
+  username: ""      # optional — leave empty for anonymous
+  password: ""      # optional
+
+# --- scenes.run: named, multi-device scenes (medium risk, local only) ---
+# Each step looks up the device in the local registry (devices.register)
+# and routes by its `via`:
+#   via: homeassistant → needs `domain` + `service` in via_args;
+#                        the device's address is used as entity_id.
+#   via: mqtt          → publishes to the device's address as topic;
+#                        via_args.payload overrides, else the step's action.
+#   via: virtual       → no hardware; step is marked executed virtually.
+scenes:
+  # movie_night:
+  #   - device: living_room_lamp
+  #     action: turn_off
+  #     via_args: {domain: light, service: turn_off}
+  #   - device: tv_backlight
+  #     action: "ON"
+  #     via_args: {payload: "ON", qos: 1}
+  #   - device: projector_screen
+  #     action: lower
+  #     # virtual device → no via_args needed

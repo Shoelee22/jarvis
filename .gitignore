@@ -1,0 +1,41 @@
+# Python / PyInstaller
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Rust / Tauri
+shell/target/
+shell/binaries/*
+!shell/binaries/README.md
+
+# Local dev
+.venv/
+venv/
+.env
+*.log
+
+# JARVIS runtime data (per-user, never in git)
+.jarvis/
+*.db
+*.db-journal
+*.db-wal
+/data/
+sidecar/data/
+jarvis-projects/
+# Phase 14 offline knowledge datasets ship with the app
+!sidecar/jarvis/tools/builtin/data/
+!sidecar/jarvis/tools/builtin/data/**
+
+# Packaging output
+*.msi
+packaging/output/
+
+# Generated demo media (never in git)
+output/
+---
+# Piper voice models are runtime downloads (make models), not source
+models/

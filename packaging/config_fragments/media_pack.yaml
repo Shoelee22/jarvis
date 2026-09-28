@@ -1,0 +1,33 @@
+# Media+ Pack tunables (Phase 6 / Pack 5).
+# ---------------------------------------------------------------------------
+# This is a fragment: copy the blocks you want into the `tools:` / top-level
+# sections of ~/workspace/jarvis/tools_config.yaml. Anything you don't set
+# falls back to the built-in defaults shown here.
+#
+# Example — paste into tools_config.yaml:
+#
+#   tools:
+#     tts.speak:           {enabled: true}
+#     audio.transcribe:    {enabled: true}
+#     image.resize:        {enabled: true}
+#     image.convert:       {enabled: true}
+#     video.trim:          {enabled: true}
+#     video.gif:           {enabled: true}
+#     video.contact_sheet: {enabled: true}
+#     file.hash:           {enabled: true}
+#     archive.zip:         {enabled: true}   # risk: medium — writes a zip anywhere under home
+#     archive.unzip:       {enabled: true}   # risk: medium — zip-slip protected, dest jailed under home
+#
+#   media:
+#     # TTS (tts.speak): pin a Piper voice explicitly, or leave empty to use the
+#     # pipeline's default (voice/pipeline.py default_voice_path()). The .json
+#     # config file must sit next to the .onnx file.
+#     tts_voice: ""                     # e.g. "/home/user/.local/share/jarvis/models/piper-voices/en/en_GB/alan/medium/en_GB-alan-medium.onnx"
+#
+#     # Transcription (audio.transcribe): faster-whisper model id. Only a model
+#     # already present in the local HF cache is used — the tool never downloads.
+#     whisper_model: "small"
+#
+#     # GIF (video.gif) defaults; overridable per call with fps: / width:.
+#     gif_fps: 10
+#     gif_width: 480

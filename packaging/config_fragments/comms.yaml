@@ -1,0 +1,40 @@
+# Jarvis comms tool pack config fragment (Phase 6 / Pack 1).
+#
+# Merge these sections into ~/workspace/jarvis/tools_config.yaml and set
+# enabled: true once the credentials are filled in. All three are disabled
+# by default — handlers return an honest not-configured error until then.
+#
+# SMTP / IMAP: use an app-specific password (never the account password).
+#   Gmail: smtp.gmail.com:587 (TLS), imap.gmail.com:993
+#   Outlook: smtp.office365.com:587 (TLS), outlook.office365.com:993
+# Note: outbound hosts must also be on the allowlist in
+#   sidecar/jarvis/security/egress.py (default-deny egress).
+
+smtp:
+  enabled: false
+  host: "smtp.gmail.com"      # e.g. smtp.gmail.com or smtp.office365.com
+  port: 587                   # 587 for STARTTLS, 465 for implicit TLS
+  username: "you@example.com"  # login username (usually the email address)
+  password: ""                # app-specific password — keep this file private
+  use_tls: true               # STARTTLS; set false for port 465 implicit TLS
+  from_addr: ""               # From: header; defaults to username when empty
+
+imap:
+  enabled: false
+  host: "imap.gmail.com"      # e.g. imap.gmail.com or outlook.office365.com
+  port: 993
+  username: "you@example.com"
+  password: ""                # app-specific password — keep this file private
+  mailbox: "INBOX"            # mailbox/folder to read from
+
+sms:
+  enabled: false
+  provider: "webhook"         # only provider supported right now
+  webhook_url: ""             # e.g. https://your-gateway.example.com/send
+  api_key: ""                 # optional: sent as "Authorization: Bearer <key>"
+
+# Optional: point contacts/calendar sqlite files elsewhere.
+# contacts:
+#   db_path: "~/my-contacts.db"
+# calendar:
+#   db_path: "~/my-calendar.db"
