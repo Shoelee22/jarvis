@@ -1,0 +1,45 @@
+name: jarvis-ci
+on: [push, pull_request]
+jobs:
+  sidecar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install pytest pyyaml fastapi "uvicorn[standard]" websockets pillow
+      - run: make sidecar-test
+      - run: python3 evals/harness.py --suite regression
+  shell:
+    strategy:
+      matrix: { os: [ubuntu-latest, windows-latest, macos-latest] }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Tauri system dependencies (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev \
+            librsvg2-dev patchelf libgtk-3-dev libxdo-dev libasound2-dev
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: clippy }
+      - name: Stub sidecar binary for config validation
+        # tauri_build validates externalBin resource paths at compile time.
+        # CI only lints (clippy) — the real sidecar binary is built by
+        # PyInstaller in build-installers.yml. A stub satisfies the check.
+        shell: bash
+        run: |
+          mkdir -p shell/binaries
+          case "${{ matrix.os }}" in
+            ubuntu-latest)  triple=x86_64-unknown-linux-gnu ;;
+            windows-latest) triple=x86_64-pc-windows-msvc.exe ;;
+            macos-latest)   triple=aarch64-apple-darwin ;;
+          esac
+          touch "shell/binaries/jarvis-sidecar-${triple}"
+          ls shell/binaries/
+      - run: cargo clippy -- -D warnings
+        working-directory: shell
+
+  # Installer builds live in .github/workflows/build-installers.yml
+  # (runs on tags v* — PyInstaller sidecar + tauri-action NSIS/MSI + Release).

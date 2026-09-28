@@ -1,0 +1,25 @@
+# System Pack (Pack 6) tunables.
+# Merge these keys into ~/workspace/jarvis/tools_config.yaml.
+# A missing key or a missing file falls back to: enabled, defaults below.
+
+tools:
+  # Desktop notification (Windows WinRT toast / notify-send / osascript).
+  notify.send:        {enabled: true}
+  # Primary-display screenshot to PNG in output_dir.
+  screen.capture:     {enabled: true}
+  # Write text to the OS clipboard (medium risk — confirmation-gated upstream).
+  clipboard.write:    {enabled: true}
+  # Battery percent + charge state; honest error on desktops/VMs.
+  battery.status:     {enabled: true}
+  # Disk usage for a path (default: home). Pure stdlib.
+  disk.usage:         {enabled: true}
+  # Top-N processes by CPU.
+  process.top:        {enabled: true}
+  # System uptime.
+  system.uptime:      {enabled: true}
+
+system_pack:
+  # Seconds before giving up on the platform command.
+  notify_timeout:     10
+  capture_timeout:    30
+  clipboard_timeout:  10

@@ -1,0 +1,246 @@
+# =============================================================================
+# JARVIS tool configuration
+# Re-read at tool call time (mtime-cached); edits take effect immediately.
+# A tool missing from `tools:` below defaults to enabled: true.
+# =============================================================================
+
+output_dir: ~/workspace/jarvis/output
+
+# Per-tool enable toggles. Set enabled: false to block a tool with a clean error.
+tools:
+  # --- Phase 4: creator pack ---
+  code.run:              {enabled: true}
+  website.build:         {enabled: true}
+  media.image:           {enabled: true}
+  video.compose:         {enabled: true}
+  social.post_instagram: {enabled: true}
+  # --- Phase 6 / Pack 2: web ---
+  web.search:            {enabled: true}   # medium, network — real DuckDuckGo
+  web.fetch:             {enabled: true}   # low, network
+  web.summarize:         {enabled: true}   # low, offline extractive
+  price.check:           {enabled: true}   # medium, network (heuristic)
+  rss.read:              {enabled: true}   # low, network
+  bookmarks.save:        {enabled: true}   # low, local sqlite
+  bookmarks.list:        {enabled: true}   # low, local sqlite
+  link.unshorten:        {enabled: true}   # low, network
+  webshot.capture:       {enabled: true}   # low, needs headless browser
+  # --- Phase 6 / Pack 4: dev ---
+  git.status:            {enabled: true}
+  git.log:               {enabled: true}
+  git.diff:              {enabled: true}
+  project.scaffold:      {enabled: true}   # medium — writes file trees
+  code.lint:             {enabled: true}
+  deps.list:             {enabled: true}
+  log.tail:              {enabled: true}
+  port.check:            {enabled: true}
+  env.doctor:            {enabled: true}
+  # --- Phase 6 / Pack 5: media+ ---
+  tts.speak:             {enabled: true}
+  audio.transcribe:      {enabled: true}
+  image.resize:          {enabled: true}
+  image.convert:         {enabled: true}
+  video.trim:            {enabled: true}
+  video.gif:             {enabled: true}
+  video.contact_sheet:   {enabled: true}
+  file.hash:             {enabled: true}
+  archive.zip:           {enabled: true}   # medium — writes under home
+  archive.unzip:         {enabled: true}   # medium — zip-slip protected
+  # --- Phase 6: specialist delegation ---
+  tasks.delegate:        {enabled: true}   # medium — bounded sub-agent loop
+  # --- Phase 6 / Pack 3: data ---
+  csv.read:              {enabled: true}
+  csv.filter:            {enabled: true}
+  csv.stats:             {enabled: true}
+  json.query:            {enabled: true}
+  db.query:              {enabled: true}   # medium — read-only SQL, jailed to DATA_DIR
+  expenses.add:          {enabled: true}   # integer paise only
+  expenses.report:       {enabled: true}
+  habits.checkin:       {enabled: true}
+  habits.report:        {enabled: true}
+  units.convert:        {enabled: true}
+  # --- Phase 12: Windows shell integration ---
+  notify.toast:          {enabled: true}   # low — local toasts only
+  shell.tray:            {enabled: true}   # low — tray icon quick actions
+  shell.autostart:       {enabled: true}   # medium — HKCU Run key, reversible
+  hotkey.daemon:         {enabled: true}   # medium — single-combo listener, not a keylogger
+  # --- Phase 18: long-running ownership ---
+  projects.create:       {enabled: true}   # low
+  projects.list:         {enabled: true}   # low
+  projects.status:       {enabled: true}   # low
+  projects.milestone_add: {enabled: true}  # low
+  projects.milestone_done: {enabled: true} # low
+  projects.log:          {enabled: true}   # low
+  projects.archive:      {enabled: true}   # medium — reversible
+  projects.delete:       {enabled: true}   # high — irreversible, needs confirmation
+  schedules.parse:       {enabled: true}   # low
+  schedules.next:        {enabled: true}   # low
+  schedules.quiet_hours: {enabled: true}   # low
+  schedules.create_routine: {enabled: true} # medium — creates automation routines
+  schedules.record_run:  {enabled: true}   # low
+  schedules.history:     {enabled: true}   # low
+  schedules.due:         {enabled: true}   # low — report only, never executes
+  meetings.log:          {enabled: true}   # low
+  meetings.list:         {enabled: true}   # low
+  meetings.actions:      {enabled: true}   # low — rule-based mining
+  meetings.open:         {enabled: true}   # low
+  security.audit:        {enabled: true}   # low — read-only
+  security.harden:       {enabled: true}   # medium — chmod under data dir only
+  # --- Phase 6 / Pack 4: dev ---
+# Every {path}/{repo} arg is realpath-resolved and must sit inside repos_dir.
+dev:
+  repos_dir: "~/workspace"
+
+# --- Phase 6 / Pack 5: media+ ---
+media:
+  # TTS (tts.speak): pin a Piper voice explicitly, or empty to use the
+  # pipeline default (voice/pipeline.py default_voice_path()). The .json
+  # config file must sit next to the .onnx file.
+  tts_voice: ""
+  # Transcription (audio.transcribe): faster-whisper model id. Only a model
+  # already present in the local HF cache is used — the tool never downloads.
+  whisper_model: "small"
+  # GIF (video.gif) defaults; overridable per call with fps: / width:.
+  gif_fps: 10
+  gif_width: 480
+
+# --- Phase 6 / Pack 6: system ---
+  notify.send:          {enabled: true}
+  screen.capture:       {enabled: true}
+  clipboard.write:      {enabled: true}   # medium risk upstream
+  battery.status:       {enabled: true}
+  disk.usage:           {enabled: true}
+  process.top:          {enabled: true}
+  system.uptime:        {enabled: true}
+
+# --- Phase 4: creator pack ---
+# Pollinations free image API (no key needed). Keep the exact path format:
+# GET {base_url}/{urlencoded-prompt}?width=&height=&nologo=true
+pollinations:
+  base_url: https://image.pollinations.ai/prompt
+
+video:
+  seconds_each: 3.0
+
+instagram:
+  # Optional account handle to prefer when several accounts are connected
+  # (e.g. "pixaalified"). Empty = use the first connected account.
+  handle: ""
+
+# --- Phase 6 / Pack 1: comms ---
+# All three backends are DISABLED by default — handlers return an honest
+# not-configured error until enabled: true with credentials filled in.
+# SMTP / IMAP: use an app-specific password (never the account password).
+#   Gmail: smtp.gmail.com:587 (TLS), imap.gmail.com:993
+#   Outlook: smtp.office365.com:587 (TLS), outlook.office365.com:993
+# Note: outbound hosts must also be on the allowlist in
+#   sidecar/jarvis/security/egress.py (default-deny egress).
+smtp:
+  enabled: false
+  host: "smtp.gmail.com"      # e.g. smtp.gmail.com or smtp.office365.com
+  port: 587                   # 587 for STARTTLS, 465 for implicit TLS
+  username: "you@example.com"  # login username (usually the email address)
+  password: ""
+  use_tls: true               # STARTTLS; set false for port 465 implicit TLS
+  from_addr: ""               # From: header; defaults to username when empty
+
+imap:
+  enabled: false
+  host: "imap.gmail.com"      # e.g. imap.gmail.com or outlook.office365.com
+  port: 993
+  username: "you@example.com"
+  password: ""
+  mailbox: "INBOX"            # mailbox/folder to read from
+
+sms:
+  enabled: false
+  provider: "webhook"         # only provider supported right now
+  webhook_url: ""             # e.g. https://your-gateway.example.com/send
+  api_key: ""                 # optional Bearer token
+
+# Optional: point contacts/calendar sqlite files elsewhere.
+# contacts:
+#   db_path: "~/my-contacts.db"
+# calendar:
+#   db_path: "~/my-calendar.db"
+
+# --- Phase 6 / Pack 2: web ---
+web:
+  fetch_timeout: 20        # HTTP timeout (seconds) for search/fetch/price/rss/unshorten
+  max_bytes: 2000000       # max response body kept; web.fetch truncates beyond this
+  search_count_default: 8  # default result count for web.search
+
+# --- Phase 6 / Pack 3: data ---
+# Hints only (informational, not enforced by code):
+data:
+  dirs:                       # allowed roots for csv.*/json.query
+    - "~"                     # currently: home-rooted via fs_tools._resolve
+  db_dir: "~/.jarvis"         # db.query sqlite files are jailed here (DATA_DIR)
+  # finance/habit stores: $DATA_DIR/finance.db and $DATA_DIR/habits.db
+  # created automatically on first use
+
+# --- Phase 6 / Pack 6: system ---
+system_pack:
+  notify_timeout: 10          # seconds before giving up on the platform command
+  capture_timeout: 30
+  clipboard_timeout: 10
+
+# --- Phase 6 / Pack 7: smart home ---
+# Everything is DISABLED / EMPTY by default: the pack is fully offline
+# until you configure a backend below. Unconfigured backends return
+# honest per-step errors — never fake success.
+# home.call: Home Assistant service calls (HIGH risk, needs_network).
+# Fill in a long-lived access token: HA → your profile → Security → Create token.
+homeassistant:
+  enabled: false
+  base_url: "http://homeassistant.local:8123"
+  token: ""
+
+# mqtt.publish: raw MQTT publishing (HIGH risk, needs_network).
+# Needs paho-mqtt in the sidecar env:  pip install paho-mqtt
+mqtt:
+  enabled: false
+  host: ""          # e.g. "192.168.1.50" or "mqtt.local"
+  port: 1883
+  username: ""      # optional — leave empty for anonymous
+  password: ""
+
+# scenes.run: named, multi-device scenes (medium risk, local only).
+# Example (uncomment to use):
+# scenes:
+#   movie_night:
+#     - {device: "living room lamp", action: "turn_off"}
+#     - {device: "tv backlight", action: "turn_on", via_args: {brightness: 30}}
+
+# --- Phase 12: Windows shell integration (sidecar/jarvis/tools/builtin/shell_pack.py) ---
+# All four tools are Windows-only: on any other OS they return an honest
+# {"error": "windows-only: ..."} without touching the system.
+# The pack reads this section defensively — the file may be absent entirely.
+shell:
+  # Global hotkey combo for hotkey.daemon (modifiers ctrl/alt/shift/win + one key or F1..F24).
+  hotkey_combo: "ctrl+shift+j"
+  # Exe path written into the HKCU Run key by shell.autostart {enable: true}.
+  # Empty = C:\Program Files\JARVIS\JARVIS.exe. Point at the real installed exe on his PC.
+  autostart_exe: ""
+  # AppUserModelID used for WinRT toasts; must match the Tauri app id for toasts to render.
+  toast_app_id: "JARVIS"
+  # Hover text for the tray icon.
+  tray_tooltip: "JARVIS"
+
+# --- Phase 16: JEV fast System 1 decision layer (sidecar/jarvis/tools/builtin/system1_pack.py) ---
+# Laya (github.com/NandhaKishorM/laya): typed choice/score/yes-no decisions over
+# any text in a single forward pass (~33 ms), 100+ languages, auto checkpoint routing.
+# OPTIONAL dependency: pip install laya  (needs torch; downloads a checkpoint on
+# first use — heavy, so it is NOT in the installer's core profile). Every
+# system1.* tool returns an honest {"ok": False, "error": ...} when laya is
+# missing or this section is disabled — never a simulated verdict.
+system1:
+  enabled: false
+  # model: "auto" (default) lets the router pick per request; or pin
+  # "english" / "multilingual". Use "multilingual" for long documents (set
+  # max_len=8192 on system1.batch for up to 8k tokens).
+  model: "auto"
+  # preload: true loads all checkpoints up front (slower startup, faster first call).
+  preload: false
+  # cache_ttl_sec: 0 disables the verdict cache. Set e.g. 300 to skip repeat
+  # forward passes for identical questions asked within 5 minutes (triage loops).
+  cache_ttl_sec: 0

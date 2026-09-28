@@ -1,0 +1,57 @@
+{
+  "models": [
+    {
+      "family": "faster-whisper tiny (local STT)",
+      "id": "stt",
+      "license": "MIT",
+      "role": "stt",
+      "size_gb": 0.15,
+      "tier": "all",
+      "files": [
+        {
+          "path": "faster-whisper-tiny/config.json",
+          "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/main/config.json",
+          "sha256": "a73a28cdfe1c43ccc7202fa333d1f89c202477271407ae9a7f19afa52039cac8"
+        },
+        {
+          "path": "faster-whisper-tiny/model.bin",
+          "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/main/model.bin",
+          "sha256": "dcb76c6586fc06cbdac6dd21f14cfd129cc4cdd9dce19bf4ffa62e59cbe6e6d1"
+        },
+        {
+          "path": "faster-whisper-tiny/tokenizer.json",
+          "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/main/tokenizer.json",
+          "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab"
+        },
+        {
+          "path": "faster-whisper-tiny/vocabulary.txt",
+          "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/main/vocabulary.txt",
+          "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913"
+        }
+      ],
+      "note": "Matches JARVIS_WHISPER_MODEL default 'tiny'. voice.listen auto-downloads this itself on first use if missing."
+    },
+    {
+      "family": "Piper en_GB-alan-medium (British male \u2014 the JARVIS voice)",
+      "id": "tts-en",
+      "license": "MIT",
+      "role": "tts",
+      "size_gb": 0.06,
+      "tier": "all",
+      "note": "JARVIS voice (British male). Both files required: PiperVoice.load needs the .onnx.json config.",
+      "files": [
+        {
+          "path": "piper-voices/en/en_GB/alan/medium/en_GB-alan-medium.onnx",
+          "url": "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_GB/alan/medium/en_GB-alan-medium.onnx",
+          "sha256": "0a309668932205e762801f1efc2736cd4b0120329622adf62be09e56339d3330"
+        },
+        {
+          "path": "piper-voices/en/en_GB/alan/medium/en_GB-alan-medium.onnx.json",
+          "url": "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_GB/alan/medium/en_GB-alan-medium.onnx.json",
+          "sha256": "c0f0d124e5895c00e7c03b35dcc8287f319a6998a365b182deb5c8e752ee8c1e"
+        }
+      ]
+    }
+  ],
+  "policy": "Models download on first run ONLY with user consent in the setup wizard. Every file is SHA-256 verified before use. Licenses are shown in Settings \u2192 Models."
+}

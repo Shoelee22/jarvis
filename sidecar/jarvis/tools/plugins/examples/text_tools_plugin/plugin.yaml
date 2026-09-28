@@ -1,0 +1,25 @@
+name: text
+version: 1.0.0
+description: Small text utilities — uppercase, word counts, reversal.
+tools:
+  - name: uppercase
+    description: Uppercase the given text.
+    risk: low
+    needs_network: false
+    handler: "text_tools:to_uppercase"
+    schema:
+      text: "string"
+  - name: wordcount
+    description: Count words, characters, and lines in the given text.
+    risk: low
+    needs_network: false
+    handler: "text_tools:wordcount"
+    schema:
+      text: "string"
+  - name: reverse
+    description: Reverse the given text.
+    risk: low
+    needs_network: false
+    handler: "text_tools:reverse_text"
+    schema:
+      text: "string"
