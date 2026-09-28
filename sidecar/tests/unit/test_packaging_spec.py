@@ -52,19 +52,21 @@ def test_spec_lists_every_builtin_pack():
 
 
 def test_fromlist_names_exist_on_disk():
-    """Every name in the __init__ fromlist must exist as a module on disk.
+    """Every pack in _PACK_NAMES must exist as a module on disk.
 
-    A fromlist name with no matching file is exactly what produced the
+    A pack name with no matching file is exactly what produced the
     v0.3.1 "circular import" crash (the missing submodule is silently
-    skipped, then IMPORT_FROM raises the misleading ImportError).
+    skipped, then the import raises the misleading ImportError).
     """
     init_text = (BUILTIN_DIR / "__init__.py").read_text(encoding="utf-8")
-    m = re.search(r"^from \. import (.+)$", init_text, re.M)
-    assert m, "from . import ... not found in builtin __init__.py"
-    listed = set(re.findall(r"[a-zA-Z_][a-zA-Z0-9_]*", m.group(1)))
+    m = re.search(r"_PACK_NAMES\s*=\s*\[(.*?)\]", init_text, re.S)
+    assert m, "_PACK_NAMES not found in builtin __init__.py"
+    listed = set(re.findall(r'"([a-zA-Z_][a-zA-Z0-9_]*)"', m.group(1)))
     packs = set(_builtin_packs())
+    # phone_stream is a helper imported by phone_pack, not a standalone pack
+    packs.discard("phone_stream")
     missing = sorted(listed - packs)
     assert not missing, (
-        "builtin __init__.py imports names with no module on disk: "
+        "builtin __init__.py lists packs with no module on disk: "
         + ", ".join(missing)
     )
