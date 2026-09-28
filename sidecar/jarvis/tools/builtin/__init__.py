@@ -1,9 +1,52 @@
 """Wire built-in tools into a Registry."""
 from __future__ import annotations
+import importlib
+import logging
 from pathlib import Path
 
 from ..base import Registry, Tool
-from . import fs_tools, shell_tools, productivity, misc, net_tools, creator, comms, system_pack, home_pack, data_pack, web_pack, dev_pack, media_pack, delegate_tool, gui_pack, browser_pack, pc_pack, telegram_pack, gmail_pack, studio_pack, doctor_pack, forge_pack, swarm_pack, workers_pack, phone_pack, inbox_pack, pdf_pack, translate_pack, finance_pack, travel_pack, edu_pack, health_pack, devops_pack, news_pack, weather_pack, permissions_pack, autopilot_pack, proactive_pack, autonomy_pack, voice_pack, vision_pack, mind_pack, shell_pack, teach_pack, sleep_pack, self_pack, loops_pack, persona_pack, brain_pack, knowledge_pack, episodic_pack, research_pack, analyst_pack, builder_pack, crm_pack, system1_pack, projects_pack, schedules_pack, meetings_pack, security_pack, metacog_pack, cognition_pack, semantics_pack, agent_pack
+
+log = logging.getLogger(__name__)
+
+# Pack modules are imported individually (not via a single fromlist) so that
+# a pack missing from the frozen bundle cannot crash startup with a
+# misleading "circular import" ImportError. Each pack is optional: if the
+# import fails, the pack is skipped and the app continues with the rest.
+_PACK_NAMES = [
+    "fs_tools", "shell_tools", "productivity", "misc", "net_tools",
+    "creator", "comms", "system_pack", "home_pack", "data_pack", "web_pack",
+    "dev_pack", "media_pack", "delegate_tool", "gui_pack", "browser_pack",
+    "pc_pack", "telegram_pack", "gmail_pack", "studio_pack", "doctor_pack",
+    "forge_pack", "swarm_pack", "workers_pack", "phone_pack", "inbox_pack",
+    "pdf_pack", "translate_pack", "finance_pack", "travel_pack", "edu_pack",
+    "health_pack", "devops_pack", "news_pack", "weather_pack",
+    "permissions_pack", "autopilot_pack", "proactive_pack", "autonomy_pack",
+    "voice_pack", "vision_pack", "mind_pack", "shell_pack", "teach_pack",
+    "sleep_pack", "self_pack", "loops_pack", "persona_pack", "brain_pack",
+    "knowledge_pack", "episodic_pack", "research_pack", "analyst_pack",
+    "builder_pack", "crm_pack", "system1_pack", "projects_pack",
+    "schedules_pack", "meetings_pack", "security_pack", "metacog_pack",
+    "cognition_pack", "semantics_pack", "agent_pack",
+]
+
+# Import each pack; collect the successfully loaded modules.
+_packs: dict[str, object] = {}
+for _name in _PACK_NAMES:
+    try:
+        _packs[_name] = importlib.import_module(f".{_name}", __name__)
+    except ImportError as e:
+        log.warning("builtin pack %s not available: %s", _name, e)
+        # Stub with no-op register so build_registry() doesn't crash.
+        # The pack's tools simply won't be available.
+        _stub = type("MissingPack", (), {
+            "register": staticmethod(lambda reg: None),
+            "RISK_TABLE_ADDITIONS": {},
+        })()
+        _packs[_name] = _stub
+
+# Re-export for backwards compatibility (e.g. `from . import analyst_pack`).
+globals().update(_packs)
+
 from ..plugins import loader as plugin_loader
 
 
